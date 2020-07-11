@@ -89,4 +89,4 @@ def createTree(dataSet,labels):
 if __name__ == '__main__':
     myData, labels = createDataSet()
     myTree = createTree(myData, labels)
-    print myTree
+    print(myTree)

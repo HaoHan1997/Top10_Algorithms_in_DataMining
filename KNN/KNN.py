@@ -32,4 +32,4 @@ def createDataSet():
 if __name__ == '__main__':
     group, labels = createDataSet()
     tag = classify([0, 0], group, labels, 3)
-    print tag
+    print(tag)

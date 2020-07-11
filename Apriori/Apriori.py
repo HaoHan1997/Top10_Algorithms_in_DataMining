@@ -7,9 +7,11 @@
 
 from numpy import *
 
+# 构造数据
 def loadDataSet():
     return [[1, 3, 4], [2, 3, 5], [1, 2, 3, 5], [2, 5]]
 
+# 将所有元素转换为frozenset型字典，存放到列表中
 def createC1(dataSet):
     C1 = []
     for transaction in dataSet:
@@ -18,20 +20,21 @@ def createC1(dataSet):
                 C1.append([item])
 
     C1.sort()
-    return map(frozenset, C1)#use frozen set so we
+	# 使用frozenset是为了后面可以将这些值作为字典的键
+    return list(map(frozenset, C1))#use frozen set so we
                             #can use it as a key in a dict
 def scanD(D, Ck, minSupport):
     ssCnt = {}
     for tid in D:
         for can in Ck:
             if can.issubset(tid):
-                if not ssCnt.has_key(can): ssCnt[can]=1
+                if can  not in ssCnt: ssCnt[can]=1
                 else: ssCnt[can] += 1
     numItems = float(len(D))
     retList = []
     supportData = {}
     for key in ssCnt:
-        support = ssCnt[key]/numItems
+        support = ssCnt[key]/(numItems )#  会报分母为0的错，在此处添加了一个+1
         if support >= minSupport:
             retList.insert(0,key)
         supportData[key] = support
@@ -50,7 +53,7 @@ def aprioriGen(Lk, k): #creates Ck
 
 def apriori(dataSet, minSupport = 0.5):
     C1 = createC1(dataSet)
-    D = map(set, dataSet)
+    D = list(map(set, dataSet))
     L1, supportData = scanD(D, C1, minSupport)
     L = [L1]
     k = 2
@@ -66,4 +69,5 @@ def apriori(dataSet, minSupport = 0.5):
 if __name__ == '__main__':
     dataSet = loadDataSet()
     L, suppData = apriori(dataSet)
-    print L
+    print(L)
+    print(suppData)
